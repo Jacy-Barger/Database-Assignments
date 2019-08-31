@@ -1,0 +1,120 @@
+
+EXERCISES
+
+1. What data types do each of these values represent?
+
+	"A Clockwork Orange"	STRING
+	42			INTEGER
+	09/02/1945		DATE
+	98.7			FLOAT
+	$15.99			CURRENCY
+
+
+
+2. Explain when a database would be used. Explain when a text file would be used.
+
+	Data that is stored in a database is not readable by humans, but can be accessed by applications that can use the stored data in a program.  Therefore, use a database when data does not need to be read by humans directly, but can be retrievable by other programs.  Use a text file when data needs to be readable by humans.  
+
+
+
+3. Describe one difference between SQL and other programming languages.
+
+	SQL is a database interaction and manipulation language, it is used to add, remove, or alter data in a database.  SQL code can be used to retrieve and display data from a database, create new tables in a database, and several other actions specific too databases.  However, unlike Java, C++, or Javascript, SQL cannot be used to write a program that will run a unique task.  For example, Javascript code can be used to add interactivity to web pages, connect a web app to API's, or link a front end application to a database.  However, SQL is limited to data interaction functions on databases that support the language.  
+
+
+
+4. In your own words, explain how the pieces of a database system fit together at a high level.
+
+	Databases store data in a binary format that is unreadable by humans.  However, when a database is queried using SQL, the data is displayed in a tabular format with columns and rows.  The columns can represent different groups of data, such as customer names, employee ID's, and product prices.  The rows represent individual pieces of data, such as the name, address, and employee number of an individual employee in a query that returns employee information.    
+
+
+
+5. Explain the meaning of table, row, column, and value.
+
+	TABLE: A SET OF DATA QUERIED FROM A SQL DATABASE THAT IS ORGANIZED AND DISPLAYED IN A TABULAR FORMAT OF ROWS AND COLUMNS.
+	ROW: A SINGLE INSTANCE OF DATA RETURNED FROM A DATABASE QUERY AND USUALLY DISPLAYED ACROSS MULTIPLE COLUMNS.
+	COLUMN: A GROUPING CATEGORY RETURNED FROM A DATABASE QUERY.  EXAMPLES COULD INCLUDE VENDOR ADDRESSES OR CUSTOMER NAMES THAT ARE RETURNED WITH MULTIPLE ROWS IN A QUERY.
+	VALUE: THE DATA THAT INHABITS A SINGLE CELL IN A DATABASE QUERY.  
+
+
+
+6. List three data types that can be used in a table.
+
+	VARCHAR
+	BOOLEAN
+	NUMERIC
+
+
+
+7. Given this payments table, provide an English description of the following queries and include their results:
+
+     SELECT date, amount		This query is going to return only the DATE and AMOUNT columns for each payment recorded in the payments table.  
+     FROM payments;
+
+	
+
+
+     SELECT amount			This query is going to return only the AMOUNT column for each payment made in the payments table that is for more than $500.
+     FROM payments
+     WHERE amount > 500;
+
+
+
+     SELECT *				This query is going to return ALL COLUMNS for each payment made in the payments table but only include rows where 'Mega Foods' is the payee.
+     FROM payments
+     WHERE payee = 'Mega Foods';
+
+
+
+
+8. Given this users table, write SQL queries using the following criteria and include the output:
+
+	i. The email and sign-up date for the user named DeAndre Data.
+
+		SELECT email, signup 
+		FROM users
+		WHERE name = 'DeAndre Data'
+
+
+		The above query will return:
+		
+		email  	                 signup
+		datad@comcast.net	 2008-01-20
+
+
+
+
+	ii. The user ID for the user with email 'aleesia.algorithm@uw.edu'.
+
+		SELECT userid
+		FROM users
+		WHERE email = 'aleesia.algorithm@uw.edu'
+
+
+		The above query will return:
+
+		userid
+		1
+
+
+
+
+	iii. All the columns for the user ID equal to 4.
+
+		SELECT *
+		FROM users
+		WHERE userid = 4
+
+		The above query will return:
+
+		userid		name 			email			signup
+		4		Brandy Boolean		bboolean@nasa.gov	1999-10-15
+
+
+
+
+
+
+
+
+
