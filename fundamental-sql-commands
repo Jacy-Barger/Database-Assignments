@@ -1,0 +1,183 @@
+
+Exercises
+
+
+1. List the commands for adding, updating, and deleting data.
+
+	INSERT INTO -- add data
+	UPDATE -- updates data
+	DELETE FROM -- delete data
+
+
+
+2. Explain the structure for each type of command.
+
+	INSERT INTO -- This command starts with typing INSERT INTO followed by the name of the table and in parenthesis the individual columns that data will be added to.  The VALUES keyword is used followed by sets of values to be added separated by commas.  The data added after the VALUES keyword much match the data types of the individual columns declared after the INSERT INTO statement.
+
+	UPDATE -- The UPDATE keyword is used followed by the name of the table to be updated.  The SET keyword is used followed by the name of the column to be updated and the data to be changed.  WHERE clauses can be used to specify the row or rows to be updated.  
+
+	DELETE FROM -- The DELETE FROM command only requires the table name to be declared and a WHERE clause to specify the rows to be deleted from.   
+
+
+
+3. What are some of the data types that can be used in tables? Give a real-world example of each type.
+
+	VARCHAR -- This data type accepts character strings of varying length.  The maximum length is defined when the data type is declared.  A real world example would be a column holding product descriptions.  A maximum VARCHAR length of 15 can be set and any descriptions going over this amount would not trigger an error, but would instead be truncated to fit the 15 character limit.  
+
+	DATE -- The DATE data type accepts date values.  The inputted date should be in the form of YYYY-MM-DD, but DATE also accepts single digit entries for month and day values.  A real world example would include an employee table showing a column for the hiring date of each employee.  The exact hour and second the employee was hired would not be necessary, so a more exact data type, such as TIME, would not be needed.  
+
+	BOOLEAN -- The Boolean data types accepts TRUE or FALSE as the data inputs and refers to whether a particular condition is true or false.  An example would include a column in an employee payroll table that shows whether or not each employee is due a bonus for the year.  TRUE can go in each cell for which an employee is due a bonus and FALSE can go in each cell for the employees who are not due a bonus.  
+
+
+
+4. Decide how to create a new table to hold a list of people invited to a wedding dinner. The table needs to have first and last names, whether they sent in their RSVP, the number of guests they are bringing, and the number of meals (1 for adults and 1/2 for children).
+
+	Which data type would you use to store each of the following pieces of information?
+
+		First and last name.
+			VARCHAR
+			
+
+		Whether they sent in their RSVP.
+			BOOLEAN
+
+
+		Number of guests.				
+			INTEGER
+
+									
+		Number of meals.								
+			DECIMAL
+									
+				
+
+	Write a command that creates the table to track the wedding dinner.
+
+			CREATE TABLE dinner (
+			    First_Name varchar(15), 
+			    Last_Name varchar(15), 
+			    RSVP boolean, 
+			    Guests integer, 
+			    Meals decimal
+			);
+
+
+	Write a command that adds a column to track whether the guest sent a thank you card.
+
+			ALTER TABLE dinner ADD COLUMN Thank_You_Card boolean;
+
+
+	You have decided to move the data about the meals to another table, so write a command to remove the column storing the number meals from the wedding table.
+
+			ALTER TABLE dinner DROP COLUMN Meals;
+
+
+	The guests will need a place to sit at the reception, so write a command that adds a column for table number.
+
+			ALTER TABLE dinner ADD COLUMN table_number integer;
+
+
+	The wedding is over and we do not need to keep this information, so write a command that deletes the table numbers from the database.
+
+			ALTER TABLE dinner DROP COLUMN table_number;
+
+
+
+5. Write a command to create a new table to hold the books in a library with the columns ISBN, title, author, genre, publishing date, number of copies, and available copies.
+
+			CREATE TABLE books (
+			    ISBN bigint,
+			    Title varchar(20),
+			    Author varchar(15),
+			    Genre varchar(15),
+		            Publishing_Date date,
+		 	    Number_of_Copies integer,
+			    Available_Copies integer
+			);
+
+
+	Find three books and add their information to the table.
+
+			INSERT INTO books VALUES (03357211923, 'The Red Tower', 'Mark Phinaus', 'Action', '1999-06-22', 7, 4);
+			INSERT INTO books VALUES (02311544731, 'The Door to Tomorrow', 'Nancy Lestroude', 'Suspense', '2002-09-12', 2, 2);
+			INSERT INTO books VALUES (05389112145, 'Coffee Down Below', 'Richard Emerson', 'Comedy', '2007-02-03', 15, 9); 
+
+
+	Someone has just checked out one of the books. Change the number of available copies to 1 fewer.
+
+			UPDATE books SET Available_Copies = 3 WHERE ISBN = 03357211923;
+
+
+	Now one of the books has been added to the banned books list. Remove it from the table.
+
+			DELETE FROM books WHERE ISBN = 02311544731;
+
+
+
+6. Write a command to make a new table to hold spacecrafts. Information should include id, name, year launched, country of origin, a brief description of the mission, orbiting body, if it is currently operating, and its approximate miles from Earth. In addition to the table creation, provide commands that perform the following operations:
+
+	CREATE TABLE spacecrafts (
+	    id integer,
+	    name varchar(20),
+	    year_launched smallint,
+	    country_of_origin varchar(15),
+	    mission_description varchar(30),
+	    orbiting_body varchar(15),
+	    operating_status boolean,
+	    miles_from_earth bigint
+	);
+
+
+	Add three non-Earth-orbiting satellites to the table.
+
+		INSERT INTO spacecrafts VALUES (27, 'Akatsuki', 2010, 'Japan', 'To observe Venus', 'Venus', True, 162000000);
+		INSERT INTO spacecrafts VALUES (516, 'MAVEN', 2013, 'America', 'To study Mars Atmosphere', 'Mars', True, 34000000);
+		INSERT INTO spacecrafts VALUES (83, 'Juno', 2011, 'America', 'To study Jupiter poles', 'Jupiter', True, 365000000);
+
+
+	Remove one of the satellites from the table since it has just crashed into the planet.
+
+		DELETE FROM spacecrafts WHERE id = 83;		
+
+
+
+	Edit another satellite because it is no longer operating and change the value to reflect that.
+
+		UPDATE spacecrafts SET operating_status = false WHERE id = 27;
+
+
+
+
+7. Write a command to create a new table to hold the emails in your inbox. This table should include an id, the subject line, the sender, any additional recipients, the body of the email, the timestamp, whether or not you have read the email, and the id of the email chain it's in. Also provide commands that perform the following operations:
+
+	CREATE TABLE emails (
+	    id integer,
+	    subject varchar(20),
+	    sender varchar(15),
+	    additional_recipiants varchar(20),
+	    body varchar(300),
+	    timestamp timestamp,
+	    mark_as_read boolean,
+	    email_chain_id integer
+	);
+
+
+
+	Add three new emails to the inbox.
+
+	    INSERT INTO emails VALUES (355, 'Hello Everyone', 'Micheal', 'Jessica', 'I am starting that new project today, I need everyone to send me their information', '1999-04-17', true, 41277);
+	    INSERT INTO emails VALUES (356, 'Reply to Request', 'Jessica', null, 'I have got my half of the project budget ready.  Who else gets a copy?', '1999-04-17', true, 23568);
+	    INSERT INTO emails VALUES (357, 'Incomplete Budget', 'Howard', 'Micheal', 'The budget report is missing some sections, please look over it', '1999-04-17', false, 32888);  
+
+
+	You deleted one of the emails, so write a command to remove the row from the inbox table.
+
+	    DELETE FROM emails WHERE id = 355;
+
+
+	You started reading an email but just heard a crash in another room. Mark the email as unread before investigating the crash, so you can come back and read it later.
+
+	    UPDATE emails SET mark_as_read = false WHERE id = 356;
+
+
+
