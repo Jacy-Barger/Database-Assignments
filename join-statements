@@ -1,0 +1,207 @@
+
+EXERCISES
+
+1. How do you find related data held in two separate data tables?
+
+	This can be done by selecting columns from each table in the SELECT statement and using a JOIN statement in the FROM clause to join the two tables on columns with the same values.  
+
+
+2. Explain, in your own words, the difference between an INNER JOIN, LEFT OUTER JOIN, and RIGHT OUTER JOIN. Give a real-world example for each.
+
+	An INNER JOIN will only join column values between two or more tables when there are actual, corresponding values in each column being joined.  For example, a department store that has a database with a products table and store_department table.  Each department in the store_department table has a department id as the primary key column and most products in the products table also have department id's as the foreign key, but some products have null as the department id or have a department id that was keyed incorrectly. If a query is written to return the product name and corresponding department name for each product by using an inner join, only those products that have a real, corresponding value between the department id columns of both the products and store_department tables will be returned.  Those products that have null or an incorrect value in the department_id column will not be shown at all.  
+
+	If two tables are being joined, a LEFT OUTER JOIN will take the table on the left hand side of the JOIN statement and return all values in the selected columns from the left hand table whether or not the columns returned have a corresponding value in the right hand table or not.  Going back to the INNER JOIN example, if the products table is the table on the left hand side of the JOIN statement and a LEFT OUTER JOIN is used, then all column values selected from the products table will be returned, regardless of whether or not there is a matching value in the store_department table.  Rows in the products table that have either null or an incorrect value for the department_id will still be returned.  
+
+	A RIGHT OUTER JOIN is the reverse of a LEFT OUTER JOIN.  When two tables are joined, a RIGHT OUTER JOIN will show the values for all columns returned by the SELECT statement for the table on the right-hand side of the JOIN statement.  For example, if there is a department_id in the store_department table that has no corresponding department_id listed in the products table, then a RIGHT OUTER JOIN will display ALL departments in the columns returned for the store_department table but place a value of null in the corresponding columns returned for the products table. 
+
+
+
+3. Define primary key and foreign key. Give a real-world example for each.
+
+	Primary key - A column in a table that holds unique values and is used to identify unique data entries in a table.  The primary key can be placed in any column, but is generally placed as the first column in a table.  For example, a financial advisory firm might have a database of different stocks that the firm partners have determined are good investment options.  The table has different columns displaying price, grade, country of origin, whether the stock is listed on NASDAQ or NYSE, and other pieces of information.  Most of the columns might display the same data for two or more stocks at some point.  For instance, the table is likely to have multiple stocks that are listed on NASDAQ or are from a certain country.  In order to make sure each stock in the database can be uniquely identified, the firm will assign a column with a unique set of numbers for each entry.  This is the primary key. 
+
+	Foreign key - A column, or set of columns, in a table that matches a primary key in a different table and allows the two tables to link based on the corresponding values.  For example, a university might have an exchange student program where students are brought in from various countries across the world.  An exchange_students table keeps track of all the students' various pieces of information such as name, date of birth, a primary key unique student id column, and foreign key column with program id's showing the id number for the program the exchange student is enrolled in.  There is also an exchange_program table that provides information regarding all the programs allotted to foreign exchange students.  The primary key for the exchange_program table is the id column, which matches the program id column in the exchange student table.  Using the exchange_student program id column and the exchange_program id column, queries can be run to join these two tables.  
+
+
+
+4. Define aliasing.
+
+	An alias is a short-hand name for a column or table name.  The intent is to make larger queries easier to both type and read by shortening long table and column names.  
+
+
+
+
+5. Change this query so that you are using aliasing:
+
+	SELECT professor.name, compensation.salary, compensation.vacation_days 
+	FROM professor JOIN compensation ON professor.id = compensation.professor_id;
+
+		SELECT p.name, c.salary, c.vacation_days
+		FROM professor AS p 
+		JOIN compensation AS c 
+		ON p.id = c.professor_id;
+
+
+
+6. Why would you use a NATURAL JOIN? Give a real-world example.
+
+	A NATURAL JOIN would be ideal when you want to select ALL records in a JOIN query between two tables but you don't want to return any matching column names and data.  For example, an employee table and payroll table both have a column with matching names and values.  A natural join will join all columns in both tables but will not include duplicate columns.  
+
+
+
+
+7. Using this Employee schema and data, write queries to find the following information:
+
+	List all employees and all shifts:
+
+		SELECT e.*, s.*
+		FROM employees AS e 
+		JOIN scheduled_shifts AS sch ON e.id = sch.employee_id
+		JOIN shifts AS s ON sch.shift_id = s.id;
+
+
+
+
+8. Using this Adoption schema and data, please write queries to retrieve the following information and include the results:
+
+	a. Create a list of all volunteers. If the volunteer is fostering a dog, include each dog as well.  
+
+		SELECT v.first_name, v.last_name, d.name AS "Foster Dog"
+		FROM volunteers AS v 
+		LEFT OUTER JOIN dogs AS d 
+		ON v.foster_dog_id = d.id;
+
+ first_name | last_name  | Foster Dog 
+------------+------------+------------
+ Rubeus     | Hagrid     | Munchkin
+ Marjorie   | Dursley    | Marmaduke
+ Sirius     | Black      | 
+ Remus      | Lupin      | 
+ Albus      | Dumbledore | 
+
+
+
+
+	b. The cat's name, adopter's name, and adopted date for each cat adopted within the past month to be displayed as part of the "Happy Tail" social media promotion which posts recent successful adoptions.
+
+		SELECT c.name AS "Cat Name", a.first_name AS "Adopter First Name", a.last_name AS "Adopter Last Name", cad.date AS "Adoption Date"
+		FROM cats AS c 
+		JOIN cat_adoptions AS cad ON c.id = cad.cat_id
+		JOIN adopters AS a ON cad.adopter_id = a.id
+		WHERE date >= (CURRENT_DATE - INTERVAL '30 DAYS');
+
+
+ Cat Name | Adopter First Name | Adopter Last Name | Adoption Date 
+----------+--------------------+-------------------+---------------
+ Mushi    | Arabella           | Figg              | 2019-08-25
+ Victoire | Argus              | Filch             | 2019-08-30
+
+
+
+
+	c. Create a list of adopters who have not yet chosen a dog to adopt.
+
+		SELECT a.*
+		FROM adopters AS a
+		LEFT OUTER JOIN dog_adoptions AS d
+		ON a.id = d.adopter_id
+		WHERE d.adopter_id IS NULL;
+
+
+id | first_name | last_name |       address       | phone_number 
+----+------------+-----------+---------------------+--------------
+  1 | Hermione   | Granger   | 32 Granger's Street | 676-464-7837
+  2 | Arabella   | Figg      | 4 Wisteria Walk     | 843-228-5239	
+
+
+
+
+	d. Lists of all cats and all dogs who have not been adopted.
+
+		SELECT name AS "Pet Name"
+		FROM cats c LEFT OUTER JOIN cat_adoptions cad ON c.id = cad.cat_id
+		WHERE cad.cat_id IS NULL
+		UNION ALL
+		SELECT name
+		FROM dogs d LEFT OUTER JOIN dog_adoptions doa ON d.id = doa.dog_id
+		WHERE doa.dog_id IS NULL;
+		
+ Pet Name  
+-----------
+ Seashell
+ Nala
+ Boujee
+ Munchkin
+ Marley
+ Lassie
+ Marmaduke	
+
+
+
+
+	e. The name of the person who adopted Rosco.
+
+		SELECT a.first_name, a.last_name 
+		FROM adopters a 
+		LEFT OUTER JOIN dog_adoptions doa ON a.id = doa.adopter_id
+		LEFT OUTER JOIN dogs d ON doa.dog_id = d.id
+		WHERE d.name = 'Rosco';
+		
+ first_name | last_name 
+------------+-----------
+ Argus      | Filch
+
+
+
+
+9. Using this Library schema and data, write queries applying the following scenarios and include the results:
+
+
+	a. To determine if the library should buy more copies of a given book, please provide the names and position, in order, of all of the patrons with a hold (request for a book with all copies checked out) on "Advanced Potion-Making".
+
+		SELECT p.name, h.rank
+		FROM patrons AS p
+		JOIN holds AS h ON p.id = h.patron_id
+		JOIN books AS b ON h.isbn = b.isbn
+		WHERE title = 'Advanced Potion-Making'
+		ORDER BY 2;
+
+      name      | rank 
+----------------+------
+ Terry Boot     |    1
+ Cedric Diggory |    2
+
+
+
+	b. List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
+
+		SELECT p.name AS "Customer Name", b.title AS "Book Title"
+		FROM transactions t 
+		RIGHT OUTER JOIN patrons p ON t.patron_id = p.id
+		LEFT OUTER JOIN books b ON t.isbn = b.isbn
+		AND t.checked_in_date IS NULL;
+		
+
+  Customer Name   |               Book Title                
+------------------+-----------------------------------------
+ Hermione Granger | 
+ Cho Chang        | 
+ Terry Boot       | 
+ Padma Patil      | 
+ Terry Boot       | Advanced Potion-Making
+ Hermione Granger | 
+ Cedric Diggory   | Fantastic Beasts and Where to Find Them
+
+
+
+
+
+
+
+
+
+
+
+
+
+
